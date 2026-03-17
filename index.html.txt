@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Tracker V2</title>
+
+<style>
+
+body{
+margin:0;
+font-family:system-ui;
+background:linear-gradient(180deg,#0f2027,#1d3b2a);
+color:white;
+}
+
+header{
+text-align:center;
+padding:20px;
+font-size:24px;
+font-weight:600;
+}
+
+.container{
+padding:15px;
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+border-radius:14px;
+padding:16px;
+margin-bottom:18px;
+backdrop-filter:blur(8px);
+}
+
+h2{
+margin-top:0;
+font-size:18px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:none;
+border-radius:8px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#2ecc71;
+border:none;
+border-radius:10px;
+color:white;
+font-size:16px;
+margin-top:8px;
+}
+
+button:active{
+transform:scale(.97);
+}
+
+table{
+width:100%;
+margin-top:10px;
+border-collapse:collapse;
+font-size:14px;
+}
+
+td,th{
+padding:6px;
+text-align:center;
+}
+
+tr:nth-child(even){
+background:rgba(255,255,255,0.05);
+}
+
+.stat{
+text-align:center;
+font-size:20px;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+ðï¸ Golf Tracker V2
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Live Round</h2>
+
+<input id="hole" placeholder="Hole #">
+<input id="strokes" placeholder="Strokes">
+
+<button onclick="addScore()">Add Score</button>
+
+<table id="scoreTable">
+<tr>
+<th>Hole</th>
+<th>Score</th>
+</tr>
+</table>
+
+<div class="stat">
+Total: <span id="total">0</span>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Your Club Yardages</h2>
+
+<input id="club" placeholder="Club (ex: 7 Iron)">
+<input id="yard" placeholder="Yardage">
+
+<button onclick="addClub()">Add Club</button>
+
+<table id="clubTable">
+<tr>
+<th>Club</th>
+<th>Yards</th>
+</tr>
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Course Yardages</h2>
+
+<input id="holeY" placeholder="Hole #">
+<input id="distY" placeholder="Yardage">
+
+<button onclick="addHole()">Add Hole</button>
+
+<table id="courseTable">
+<tr>
+<th>Hole</th>
+<th>Yards</th>
+</tr>
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Shot Distance Tracker</h2>
+
+<input id="shotClub" placeholder="Club Used">
+<input id="shotDist" placeholder="Distance (yards)">
+
+<button onclick="addShot()">Add Shot</button>
+
+<table id="shotTable">
+<tr>
+<th>Club</th>
+<th>Distance</th>
+</tr>
+</table>
+
+<div class="stat">
+Average Distance: <span id="avgDist">0</span>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Handicap Estimate</h2>
+
+<input id="roundScore" placeholder="Round Score">
+
+<button onclick="addRound()">Add Round</button>
+
+<div class="stat">
+Estimated Handicap: <span id="handicap">0</span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let total=0
+let shots=[]
+let rounds=[]
+
+function addScore(){
+
+let hole=document.getElementById("hole").value
+let strokes=parseInt(document.getElementById("strokes").value)
+
+let table=document.getElementById("scoreTable")
+
+let row=table.insertRow()
+
+row.insertCell(0).innerHTML=hole
+row.insertCell(1).innerHTML=strokes
+
+total+=strokes
+
+document.getElementById("total").innerText=total
+
+}
+
+function addClub(){
+
+let club=document.getElementById("club").value
+let yard=document.getElementById("yard").value
+
+let table=document.getElementById("clubTable")
+
+let row=table.insertRow()
+
+row.insertCell(0).innerHTML=club
+row.insertCell(1).innerHTML=yard
+
+}
+
+function addHole(){
+
+let hole=document.getElementById("holeY").value
+let yard=document.getElementById("distY").value
+
+let table=document.getElementById("courseTable")
+
+let row=table.insertRow()
+
+row.insertCell(0).innerHTML=hole
+row.insertCell(1).innerHTML=yard
+
+}
+
+function addShot(){
+
+let club=document.getElementById("shotClub").value
+let dist=parseInt(document.getElementById("shotDist").value)
+
+shots.push(dist)
+
+let table=document.getElementById("shotTable")
+
+let row=table.insertRow()
+
+row.insertCell(0).innerHTML=club
+row.insertCell(1).innerHTML=dist
+
+let avg=shots.reduce((a,b)=>a+b)/shots.length
+
+document.getElementById("avgDist").innerText=Math.round(avg)
+
+}
+
+function addRound(){
+
+let score=parseInt(document.getElementById("roundScore").value)
+
+rounds.push(score)
+
+let avg=rounds.reduce((a,b)=>a+b)/rounds.length
+
+let handicap=Math.round((avg-72)*0.8)
+
+document.getElementById("handicap").innerText=handicap
+
+}
+
+</script>
+
+</body>
+</html>
